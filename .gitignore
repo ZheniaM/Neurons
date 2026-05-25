@@ -6,3 +6,17 @@ gui/
 bifs/
 portraits/
 log.txt
+all_recomp_libs.sh
+b.ps
+build.sh
+build2.sh
+disasm.sh
+hexs2doubles*
+main
+main.cpp
+MyMainFrame
+MyMainFrame.exe
+MyMainFrameDict.cpp
+test.cpp
+MyMainFrameDict_rdict.pcm
+*.[Pp][Aa][Ss]
