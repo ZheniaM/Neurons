@@ -9,11 +9,11 @@
     MODES_X(ts, "Time series", TimeSiries)                                     \
     MODES_X(tsTwoEps, "Time series two eps", TimeSiriesTwoEps)                 \
     MODES_X(portrait, "Portrait", Portrait)                                    \
-    MODES_X(syncR, "Sync R", SyncR)                                            \
     MODES_X(snapshot, "Snapshot", Snapshot)                                    \
     MODES_X(stochastickLevel, "Stochastick level", StochastickLevel)           \
     MODES_X(transientBasin, "Transient basin", TransientBasin)                 \
     MODES_X(transientBasinColor, "Transient basin color", TransientBasinColor) \
+    MODES_X(syncR, "Sync R", SyncR)                                            \
     MODES_X(syncR2D, "Sync R 2D", SyncR2D)                                     \
     MODES_X(syncR2DChaos, "Sync R 2D K-EPS", SyncR2DChaos)                     \
     MODES_X(lyapunov, "Lyapunov", Lyapunov)                                    \

@@ -5,8 +5,52 @@
 
 #include <random>
 
+struct SystemOf2NeuronsStateV2InitState
+{
+    Point2x2 const &P0;
+    double const a = 0.89;
+    double const b = 0.18;
+    double const c = 0.28;
+    double const I;
+    double const k;
+};
+
+struct SystemOf2NeuronsStateV2InitStateChaos
+{
+    Point2x2 const &P0;
+    double const a = 0.89;
+    double const b = 0.18;
+    double const c = 0.28;
+    double const I;
+    double const k;
+    double const eps;
+    bool const isStochastick = true;
+};
+
 struct SystemOf2NeuronsStateV2 : Point2x2
 {
+    SystemOf2NeuronsStateV2(SystemOf2NeuronsStateV2InitState *initState)
+        : Point2x2(initState->P0),
+          _a(initState->a),
+          _b(initState->b),
+          _c(initState->c),
+          _k(initState->k),
+          _I(initState->I)
+    {
+    }
+
+    SystemOf2NeuronsStateV2(SystemOf2NeuronsStateV2InitStateChaos *initState)
+        : Point2x2(initState->P0),
+          _a(initState->a),
+          _b(initState->b),
+          _c(initState->c),
+          _k(initState->k),
+          _I(initState->I),
+          _eps(initState->eps),
+          _isStochastick(initState->isStochastick)
+    {
+    }
+
     template <class T,
               typename = std::enable_if<
                   std::is_same_v<std::remove_cv_t<std::remove_reference_t<decltype(T::P0)>>, Point2x2> &&

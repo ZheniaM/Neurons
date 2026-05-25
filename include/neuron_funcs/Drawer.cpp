@@ -502,11 +502,19 @@ Drawer::Drawer Drawer::draw_Lyapunov(MyMainFrame const &mmf)
     Drawer drawer("ALP", args, "Lyapunov");
     auto mg = drawer.mg;
 
-    set_graphic_style(g);
-    set_graphic_color(g, EColor::kGreen);
-    g.SetMarkerSize(0.5);
+    double const xs[] = {lyapunov.k1, lyapunov.k2};
+    double const ys[] = {0.0, 0.0};
+    TGraph xAxis{2ull, xs, ys};
+    xAxis.SetLineColor(EColor::kBlack);
+    xAxis.SetLineWidth(2);
+
+    g.SetMarkerStyle(EMarkerStyle::kDot);
+    g.SetLineWidth(2);
+    g.SetMarkerColor(EColor::kGreen);
+    g.SetLineColor(EColor::kGreen);
 
     mg->SetTitle(Form("Lyapunov: %s;K;#lambda", args));
+    mg->Add(&xAxis);
     mg->Add(&g);
     mg->Draw(drawer.drawOption);
 
