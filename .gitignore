@@ -20,3 +20,4 @@ MyMainFrameDict.cpp
 test.cpp
 MyMainFrameDict_rdict.pcm
 *.[Pp][Aa][Ss]
+include/settings*
