@@ -22,11 +22,27 @@
 #include <TGTextView.h>
 
 #define GROUP_LIST     \
+    GROUP_AXIS         \
     GROUP_ABC          \
     GROUP_P0           \
     GROUP_SYS_PARAMS   \
     GROUP_PASS_PROCESS \
     GROUP_ADDITIONAL
+
+#define GROUP_AXIS                                                             \
+    INIT_GROUP(AXIS, "Axis")                                                   \
+    GROUP_ELEM_DOUBLE(AXIS, xAxisLabelSize, "X labels size", 0.08)             \
+    GROUP_ELEM_INT(AXIS, xAxisLabelDivisions, "X label div", 1010)             \
+    GROUP_ELEM_BOOL(AXIS, xAxisLabelDivisionsOptim, "X label div optim", true) \
+    GROUP_ELEM_DOUBLE(AXIS, xAxisTitleSize, "X title size", 0.10)              \
+    GROUP_ELEM_DOUBLE(AXIS, xAxisTitleOffset, "X title offset", 0.3)           \
+    GROUP_ELEM_BOOL(AXIS, xAxisTitleAtCenter, "X centering title", false)      \
+    GROUP_ELEM_DOUBLE(AXIS, yAxisLabelSize, "Y labels size", 0.08)             \
+    GROUP_ELEM_INT(AXIS, yAxisLabelDivisions, "Y label divisions", 1010)       \
+    GROUP_ELEM_BOOL(AXIS, yAxisLabelDivisionsOptim, "Y label div optim", true) \
+    GROUP_ELEM_DOUBLE(AXIS, yAxisTitleSize, "Y title size", 0.10)              \
+    GROUP_ELEM_DOUBLE(AXIS, yAxisTitleOffset, "Y title offset", 0.4)           \
+    GROUP_ELEM_BOOL(AXIS, yAxisTitleAtCenter, "Y centering title", false)
 
 #define GROUP_ABC                        \
     INIT_GROUP(ABC, "a, b, c")           \
@@ -84,6 +100,7 @@ struct MyMainFrame
     void DoPrint();
     void DoSetStablePoint();
     void onSelectedComboBox_mode(int id);
+    void DoHideAxisGroup();
 
     static auto constexpr get_stable_point(void) { return SystemOf2NeuronsState::stablePoint; }
 
@@ -98,13 +115,16 @@ public:
 private:
     // режим программы
     // biffurc, time siries, etc.
+    TGGroupFrame *group_Mode;
     TGComboBox *fComboBox_mode = nullptr;
     std::function<Drawer::Drawer(MyMainFrame const &mmf)> drawer = nullptr;
     Drawer::Drawer returnedDrawer;
 
     ////////////////////////////////////////////////////////////////////////////////
 
-#define INIT_GROUP(name, txt)
+#define INIT_GROUP(name, txt) \
+private:                      \
+    TGGroupFrame *group_##name;
 #define GROUP_ELEM_DOUBLE(groupName, name, txt, val) \
 private:                                             \
     TGLabel *fLabel_##name = nullptr;                \
@@ -138,6 +158,7 @@ public:                                            \
 
     // TGTextButton *fTextButton_clear;
     // TGTextButton *fTextButton_addContent;
+    TGTextButton *fTextButton_hideAxisGroup;
     TGTextButton *fTextButton_draw;
     TGTextButton *fTextButton_print;
     TGTextButton *fTextButton_setStablePoint;
@@ -151,7 +172,8 @@ public:                                            \
     MODES
 #undef MODES_X
 
-public:
+private:
+    bool fIsAxisHiden = false;
 };
 
 #undef DECLARE_LABEL_NE_GETTER_OF_DOUBLE

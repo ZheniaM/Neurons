@@ -33,7 +33,7 @@ std::unique_ptr<Points2> TransientBasin::get_points(void)
             do
             {
                 curr = system.next();
-            } while (++t < maxt && (curr - PStable).mod() >= 1e-8);
+            } while (++t < maxt && (curr - PStable).mod() >= 1e-4);
 
             bool isConverge = (t < maxt);
             points->add_point(PStart.get_x1(), PStart.get_y1(), isConverge, t);

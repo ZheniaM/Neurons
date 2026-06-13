@@ -22,7 +22,7 @@ public:
     (p)->AddFrame(hframe_##name, new TGLayoutHints(kLHintsExpandX));                                            \
     fNumberEntry_##name = new TGNumberEntry(hframe_##name, (val), (digitw), -1, (fmt));                         \
     hframe_##name->AddFrame(fNumberEntry_##name, new TGLayoutHints(kLHintsRight | kLHintsCenterY, 4, 4, 4, 4)); \
-    fNumberEntry_##name->Resize(paramsw * 3 / 4, 20);                                                           \
+    fNumberEntry_##name->Resize(paramsw * 5 / 8, 20);                                                           \
     fLabel_##name = new TGLabel(hframe_##name, (txt));                                                          \
     hframe_##name->AddFrame(fLabel_##name, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 4, 4, 4, 4));        \
     fLabel_##name->Resize(paramsw / 4, 20);
@@ -30,10 +30,10 @@ public:
 #define CREATE_BUTTON(p, name, txt, callback)                                \
     fTextButton_##name = new TGTextButton((p), "&" txt);                     \
     fTextButton_##name->Connect("Clicked()", "MyMainFrame", this, callback); \
-    (p)->AddFrame(fTextButton_##name, new TGLayoutHints(kLHintsExpandX | kLHintsBottom, 0, 0, 8, 0));
+    (p)->AddFrame(fTextButton_##name, new TGLayoutHints(kLHintsExpandX | kLHintsNormal, 0, 0, 8, 0));
 
 #define DECLARE_GROUP_FRAME(p, name, txt)                      \
-    TGGroupFrame *group_##name = new TGGroupFrame((p), (txt)); \
+    group_##name = new TGGroupFrame((p), (txt)); \
     (p)->AddFrame(group_##name, new TGLayoutHints(kLHintsNormal | kLHintsExpandX, 0, 0, 8, 0));
 
 MyMainFrame::MyMainFrame(TGWindow const *p, UInt_t w, UInt_t h)
@@ -88,9 +88,9 @@ MyMainFrame::MyMainFrame(TGWindow const *p, UInt_t w, UInt_t h)
     // Every params
     ////////////////////
 
+    CREATE_BUTTON(vframe, hideAxisGroup, "Hide axis group", "DoHideAxisGroup()");
 #define INIT_GROUP(name, txt)                                                                      \
-    TGGroupFrame *group_##name = new TGGroupFrame(vframe, txt);                                    \
-    vframe->AddFrame(group_##name, new TGLayoutHints(kLHintsNormal | kLHintsExpandX, 0, 0, 8, 0)); \
+    DECLARE_GROUP_FRAME(vframe, name, txt)                                                         \
     TGVerticalFrame *vframe_##name = new TGVerticalFrame(group_##name, paramsw);                   \
     group_##name->AddFrame(vframe_##name);
 
@@ -115,9 +115,9 @@ MyMainFrame::MyMainFrame(TGWindow const *p, UInt_t w, UInt_t h)
     // Buttons
     ////////////////////
 
-    CREATE_BUTTON(vframe, print, "Print", "DoPrint()");
-    CREATE_BUTTON(vframe, draw, "Draw", "DoDraw()");
     CREATE_BUTTON(vframe, setStablePoint, "Switch point", "DoSetStablePoint()");
+    CREATE_BUTTON(vframe, draw, "Draw", "DoDraw()");
+    CREATE_BUTTON(vframe, print, "Print", "DoPrint()");
 
     fMainFrame->SetWindowName("window name");
     fMainFrame->MapSubwindows();
@@ -125,6 +125,8 @@ MyMainFrame::MyMainFrame(TGWindow const *p, UInt_t w, UInt_t h)
     fMainFrame->MapWindow();
     fComboBox_mode->Select(0);
     // fComboBox_canvasMode->Select(0);
+    fIsAxisHiden = false;
+    DoHideAxisGroup();
 }
 
 MyMainFrame::~MyMainFrame()
@@ -132,6 +134,22 @@ MyMainFrame::~MyMainFrame()
     fMainFrame->Cleanup();
     delete fMainFrame;
     gApplication->Terminate(0);
+}
+
+void MyMainFrame::DoHideAxisGroup()
+{
+    fIsAxisHiden ^= 1;
+    if (fIsAxisHiden)
+    {
+        group_AXIS->UnmapWindow();
+        fTextButton_hideAxisGroup->SetText("Show axis group");
+    }
+    else
+    {
+        group_AXIS->MapWindow();
+        fTextButton_hideAxisGroup->SetText("Hide axis group");
+    }
+    onSelectedComboBox_mode(fComboBox_mode->GetSelected());
 }
 
 void MyMainFrame::DoDraw()
@@ -201,10 +219,10 @@ void MyMainFrame::DoSetStablePoint()
     fNumberEntry_y1->SetNumber(y1, true);
     fNumberEntry_x2->SetNumber(x2, true);
     fNumberEntry_y2->SetNumber(y2, true);
-//     fNumberEntry_x1->SetNumber(x1.f64, true);
-//     fNumberEntry_y1->SetNumber(y1.f64, true);
-//     fNumberEntry_x2->SetNumber(x2.f64, true);
-//     fNumberEntry_y2->SetNumber(y2.f64, true);
+    //     fNumberEntry_x1->SetNumber(x1.f64, true);
+    //     fNumberEntry_y1->SetNumber(y1.f64, true);
+    //     fNumberEntry_x2->SetNumber(x2.f64, true);
+    //     fNumberEntry_y2->SetNumber(y2.f64, true);
 }
 
 void MyMainFrame::onSelectedComboBox_mode(int id)

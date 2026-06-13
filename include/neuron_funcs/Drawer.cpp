@@ -31,6 +31,21 @@
 #include "LyapunovEps.hpp"
 #include "StabilityOfChaos.hpp"
 
+void Drawer::setAxis(TAxis *xAxis, TAxis *yAxis, MyMainFrame const &mmf)
+{
+    xAxis->SetLabelSize(mmf.get_xAxisLabelSize());
+    xAxis->SetNdivisions(mmf.get_xAxisLabelDivisions(), mmf.get_xAxisLabelDivisionsOptim());
+    xAxis->SetTitleSize(mmf.get_xAxisTitleSize());
+    xAxis->SetTitleOffset(mmf.get_xAxisTitleOffset());
+    xAxis->CenterTitle(mmf.get_xAxisTitleAtCenter());
+
+    yAxis->SetLabelSize(mmf.get_yAxisLabelSize());
+    yAxis->SetNdivisions(mmf.get_yAxisLabelDivisions(), mmf.get_yAxisLabelDivisionsOptim());
+    yAxis->SetTitleSize(mmf.get_yAxisTitleSize());
+    yAxis->SetTitleOffset(mmf.get_yAxisTitleOffset());
+    yAxis->CenterTitle(mmf.get_yAxisTitleAtCenter());
+}
+
 Drawer::Drawer Drawer::draw_Bifurc(MyMainFrame const &mmf)
 {
     Bifurc bifurc{
@@ -86,14 +101,22 @@ Drawer::Drawer Drawer::draw_Bifurc(MyMainFrame const &mmf)
     gx1.SetMarkerColor(EColor::kRed);
     mg1->SetTitle(Form("Bifurcation X_{1}: %s;k;X_{1}", args));
     mg1->Add(&gx1);
-    mg1->Draw(drawer1.drawOption);
+    mg1->Draw("A");
+    canvas->Update();
+    setAxis(mg1->GetXaxis(), mg1->GetYaxis(), mmf);
+    mg1->Draw("P SAME");
+    // mg1->Draw(drawer1.drawOption);
     linex.Draw();
 
     canvas->cd(2);
     gx2.SetMarkerColor(EColor::kBlue);
     mg2->SetTitle(Form("Bifurcation Y_{1}: %s;k;Y_{1}", args));
     mg2->Add(&gx2);
-    mg2->Draw(drawer2.drawOption);
+    mg2->Draw("A");
+    canvas->Update();
+    setAxis(mg2->GetXaxis(), mg2->GetYaxis(), mmf);
+    mg2->Draw("P SAME");
+    // mg2->Draw(drawer2.drawOption);
     liney.Draw();
 
     canvas->Update();
@@ -147,13 +170,21 @@ Drawer::Drawer Drawer::draw_BifurcTraction(MyMainFrame const &mmf)
     gx1.SetMarkerColor(EColor::kRed);
     mg1->SetTitle(Form("Bifurcation by traction X_{1}: %s;k;X_{1}", args));
     mg1->Add(&gx1);
-    mg1->Draw(drawer1.drawOption);
+    mg1->Draw("A");
+    canvas->Update();
+    setAxis(mg1->GetXaxis(), mg1->GetYaxis(), mmf);
+    mg1->Draw("P SAME");
+    // mg1->Draw(drawer1.drawOption);
 
     canvas->cd(2);
     gx2.SetMarkerColor(EColor::kBlue);
     mg2->SetTitle(Form("Bifurcation by traction X_{2}: %s;k;X_{2}", args));
     mg2->Add(&gx2);
-    mg2->Draw(drawer2.drawOption);
+    mg2->Draw("A");
+    canvas->Update();
+    setAxis(mg2->GetXaxis(), mg2->GetYaxis(), mmf);
+    mg2->Draw("P SAME");
+    // mg2->Draw(drawer2.drawOption);
 
     canvas->Update();
     return drawer1;
@@ -215,6 +246,7 @@ Drawer::Drawer Drawer::draw_Portrait(MyMainFrame const &mmf)
     histxx->GetXaxis()->SetLimits(0.0, 3.0);
     histxx->SetMinimum(0.0);
     histxx->SetMaximum(3.0);
+    setAxis(mgxx->GetXaxis(), mgxx->GetYaxis(), mmf);
     mgxx->Draw(connectDots ? "PL SAME" : "P SAME");
     canvas->Update();
     // mgxx->GetXaxis()->SetLimits(0.0, 3.0);
@@ -243,6 +275,7 @@ Drawer::Drawer Drawer::draw_Portrait(MyMainFrame const &mmf)
     histxy->GetXaxis()->SetLimits(0.0, 3.0);
     histxy->SetMinimum(0.0);
     histxy->SetMaximum(4.0);
+    setAxis(mgxy->GetXaxis(), mgxy->GetYaxis(), mmf);
     mgxy->Draw(connectDots ? "PL SAME" : "P SAME");
     canvas->Update();
     // mgxy->GetXaxis()->SetLimits(0.0, 3.0);
@@ -291,7 +324,11 @@ Drawer::Drawer Drawer::draw_SyncR(MyMainFrame const &mmf)
     mg->SetTitle(Form("Sync R: %s;K;R", args));
 
     mg->Add(&g);
-    mg->Draw(drawer.drawOption);
+    mg->Draw("A");
+    canvas->Update();
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+    mg->Draw("P SAME");
+    // mg->Draw(drawer.drawOption);
     canvas->Update();
     return drawer;
 }
@@ -349,9 +386,9 @@ Drawer::Drawer Drawer::draw_TimeSiries(MyMainFrame const &mmf)
     canvas->Update();
     mgx->SetMinimum(0.0);
     mgx->SetMaximum(6.0);
+    setAxis(mgx->GetXaxis(), mgx->GetYaxis(), mmf);
     mgx->Draw("LP SAME");
     canvas->Update();
-
 
     canvas->cd(2);
     TGraph gy1(points->size(), t, points->get_data_y1s());
@@ -372,6 +409,7 @@ Drawer::Drawer Drawer::draw_TimeSiries(MyMainFrame const &mmf)
     canvas->Update();
     mgy->SetMinimum(0);
     mgy->SetMaximum(2.5);
+    setAxis(mgy->GetXaxis(), mgy->GetYaxis(), mmf);
     mgy->Draw("LP SAME");
     canvas->Update();
     return drawer1;
@@ -442,7 +480,11 @@ Drawer::Drawer Drawer::draw_TimeSiriesTwoEps(MyMainFrame const &mmf)
 
     mgx->SetTitle(Form("Time siries: %s;T;X_{1}", args));
     mgx->Add(&gx1), mgx->Add(&gx2);
-    mgx->Draw(drawer1.drawOption);
+    mgx->Draw("A");
+    canvas->Update();
+    setAxis(mgx->GetXaxis(), mgx->GetYaxis(), mmf);
+    mgx->Draw("LP SAME");
+    // mgx->Draw(drawer1.drawOption);
 
     canvas->cd(2);
     TGraph gy1(points1->size(), t, points1->get_data_y1s());
@@ -459,7 +501,11 @@ Drawer::Drawer Drawer::draw_TimeSiriesTwoEps(MyMainFrame const &mmf)
 
     mgy->SetTitle(Form("Time siries: %s;T;Y_{1}", args));
     mgy->Add(&gy1), mgy->Add(&gy2);
-    mgy->Draw(drawer2.drawOption);
+    mgy->Draw("A");
+    canvas->Update();
+    setAxis(mgy->GetXaxis(), mgy->GetYaxis(), mmf);
+    mgy->Draw("LP SAME");
+    // mgy->Draw(drawer2.drawOption);
 
     canvas->Update();
     // print_canvas(canvas, "TS", "test");
@@ -516,7 +562,11 @@ Drawer::Drawer Drawer::draw_Lyapunov(MyMainFrame const &mmf)
     mg->SetTitle(Form("Lyapunov: %s;K;#lambda", args));
     mg->Add(&xAxis);
     mg->Add(&g);
-    mg->Draw(drawer.drawOption);
+    mg->Draw("A");
+    canvas->Update();
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+    mg->Draw("LP SAME");
+    // mg->Draw(drawer.drawOption);
 
     canvas->Update();
     return drawer;
@@ -573,9 +623,14 @@ Drawer::Drawer Drawer::draw_Snapshot(MyMainFrame const &mmf)
 
     mg->Add(&g), mg->Add(&g0), mg->Add(&gRanges);
     mg->SetTitle(Form("Snapshot: %s;X_{1};Y_{1}", args));
-    mg->GetXaxis()->SetRangeUser(snapshot.minx1, snapshot.maxx1);
-    mg->GetYaxis()->SetRangeUser(snapshot.miny1, snapshot.maxy1);
-    mg->Draw(drawer.drawOption);
+    mg->Draw("A");
+    canvas->Update();
+    mg->GetXaxis()->SetLimits(snapshot.minx1, snapshot.maxx1);
+    mg->SetMinimum(snapshot.miny1);
+    mg->SetMaximum(snapshot.maxy1);
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+    mg->Draw("P SAME");
+    // mg->Draw(drawer.drawOption);
 
     canvas->Update();
     return drawer;
@@ -621,7 +676,11 @@ Drawer::Drawer Drawer::draw_StochastickLevel(MyMainFrame const &mmf)
     set_graphic_color(gx, EColor::kBlue);
     mgx->Add(&gx);
     mgx->SetTitle(Form("Stochastick level: %s;#varepsilon;X_{1}", args));
-    mgx->Draw(drawer1.drawOption);
+    mgx->Draw("A");
+    canvas->Update();
+    setAxis(mgx->GetXaxis(), mgx->GetYaxis(), mmf);
+    mgx->Draw("P SAME");
+    // mgx->Draw(drawer1.drawOption);
     tex.Draw();
 
     canvas->cd(2);
@@ -634,7 +693,10 @@ Drawer::Drawer Drawer::draw_StochastickLevel(MyMainFrame const &mmf)
     set_graphic_color(gy, EColor::kRed);
     mgy->Add(&gy);
     mgy->SetTitle(Form("Stochastick level: %s;#varepsilon;Y_{1}", args));
-    mgy->Draw(drawer2.drawOption);
+    mgy->Draw("A");
+    canvas->Update();
+    setAxis(mgy->GetXaxis(), mgy->GetYaxis(), mmf);
+    mgy->Draw("P SAME");
     tex.Draw();
 
     canvas->Update();
@@ -826,11 +888,13 @@ Drawer::Drawer Drawer::draw_TransientBasin(MyMainFrame const &mmf)
         mg->Add(&portret);
     }
 
-    mg->Draw(drawer.drawOption);
+    mg->Draw("A");
+    canvas->Update();
     mg->GetXaxis()->SetLimits(tb.minx1, tb.maxx1);
     mg->SetMinimum(tb.miny1);
     mg->SetMaximum(tb.maxy1);
-    canvas->Modified();
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+    mg->Draw("P SAME");
     canvas->Update();
     return drawer;
 }
@@ -899,11 +963,14 @@ Drawer::Drawer Drawer::draw_TransientBasinColor(MyMainFrame const &mmf)
             }
         }
 
-        mg->Draw(drawer.drawOption);
+        mg->Draw("A");
+        canvas->Update();
+        // mg->Draw(drawer.drawOption);
         mg->GetXaxis()->SetLimits(tb.minx1, tb.maxx1);
         mg->SetMinimum(tb.miny1);
         mg->SetMaximum(tb.maxy1);
-        canvas->Modified();
+        setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+        mg->Draw("P SAME");
         canvas->Update();
         return drawer;
     }
@@ -975,13 +1042,19 @@ Drawer::Drawer Drawer::draw_BifurcI(MyMainFrame const &mmf)
     gx1.SetMarkerColor(EColor::kRed);
     mg1->SetTitle(Form("Bifurcation IOX: %s;I;X_{1}", args));
     mg1->Add(&gx1);
-    mg1->Draw(drawer1.drawOption);
+    mg1->Draw("A");
+    canvas->Update();
+    setAxis(mg1->GetXaxis(), mg1->GetYaxis(), mmf);
+    mg1->Draw("P SAME");
 
     canvas->cd(2);
     gx2.SetMarkerColor(EColor::kBlue);
     mg2->SetTitle(Form("Bifurcation IOY: %s;I;Y_{1}", args));
     mg2->Add(&gx2);
-    mg2->Draw(drawer2.drawOption);
+    mg2->Draw("A");
+    canvas->Update();
+    setAxis(mg2->GetXaxis(), mg2->GetYaxis(), mmf);
+    mg2->Draw("P SAME");
 
     canvas->Update();
     return drawer2;
@@ -1140,6 +1213,7 @@ Drawer::Drawer Drawer::draw_LyapunovEps(MyMainFrame const &mmf)
     mg->Draw("A");
     canvas->Update();
     mg->GetXaxis()->SetLimits(leps.eps1, leps.eps2);
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
     canvas->SetLogx();
     mg->Draw("LP SAME");
     canvas->Update();
@@ -1217,7 +1291,7 @@ Drawer::Drawer Drawer::draw_StabilityOfChaos(MyMainFrame const &mmf)
     TGraph g3{static_cast<Int_t>(points3->size()), points3->get_data_xs(), points3->get_data_ys()};
     Drawer drawer("ALP", args, "StabilityOfChaos");
     auto mg = drawer.mg;
-    
+
     g1.SetMarkerStyle(EMarkerStyle::kDot);
     g1.SetMarkerColor(EColor::kRed);
     g1.SetLineColor(EColor::kRed);
@@ -1242,6 +1316,7 @@ Drawer::Drawer Drawer::draw_StabilityOfChaos(MyMainFrame const &mmf)
     mg->GetXaxis()->SetLimits(sc1.eps1, sc1.eps2);
     mg->SetMinimum(0.0);
     mg->SetMaximum(1.0);
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
     canvas->SetLogx();
     mg->Draw("LP SAME");
 

@@ -45,6 +45,8 @@ namespace Drawer
         bool hasValue = true;
     };
 
+    void setAxis(TAxis *xAxis, TAxis *yAxis, MyMainFrame const &mmf);
+
 #define MODES_X(mode, txt, classname) \
     Drawer draw_##classname(MyMainFrame const &mmf);
     // Drawer draw_##classname(MyMainFrame const &mmf);
