@@ -23,6 +23,7 @@ struct TransientBasin
     uint64_t const nx1;
     uint64_t const ny1;
     uint64_t const maxt;
+    double const delta = 1e-4;
 
     std::unique_ptr<Points2> get_points(void);
 };

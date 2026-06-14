@@ -10,7 +10,6 @@ std::unique_ptr<Points2> TransientBasin::get_points(void)
 {
     auto points = std::make_unique<Points2>();
 
-    printf("PStable: %s\n", static_cast<std::string>(PStable).c_str());
     using Y = std::remove_const_t<decltype(ny1)>;
     using X = std::remove_const_t<decltype(nx1)>;
     using T = std::remove_const_t<decltype(maxt)>;
@@ -33,7 +32,7 @@ std::unique_ptr<Points2> TransientBasin::get_points(void)
             do
             {
                 curr = system.next();
-            } while (++t < maxt && (curr - PStable).mod() >= 1e-4);
+            } while (++t < maxt && (curr - PStable).mod() >= delta);
 
             bool isConverge = (t < maxt);
             points->add_point(PStart.get_x1(), PStart.get_y1(), isConverge, t);

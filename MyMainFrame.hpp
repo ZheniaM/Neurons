@@ -76,20 +76,23 @@
     GROUP_ELEM_INT(PassProcess, pass, "pass", 10'000) \
     GROUP_ELEM_INT(PassProcess, process, "process", 1'000)
 
-#define GROUP_ADDITIONAL                                                            \
-    INIT_GROUP(Additional, "Additional")                                            \
-    GROUP_ELEM_DOUBLE(Additional, minx1, "min x1", 0)                               \
-    GROUP_ELEM_DOUBLE(Additional, miny1, "min y1", 0)                               \
-    GROUP_ELEM_DOUBLE(Additional, maxx1, "max x1", 3)                               \
-    GROUP_ELEM_DOUBLE(Additional, maxy1, "max y1", 4)                               \
-    GROUP_ELEM_INT(Additional, nx1, "# x1", 100)                                    \
-    GROUP_ELEM_INT(Additional, ny1, "# y1", 100)                                    \
-    GROUP_ELEM_INT(Additional, onWitch, "t", 100)                                   \
-    GROUP_ELEM_DOUBLE(Additional, mineps, "min eps", 1e-4)                          \
-    GROUP_ELEM_DOUBLE(Additional, maxeps, "max eps", 1e-3)                          \
-    GROUP_ELEM_INT(Additional, neps, "# eps", 10'000)                               \
-    GROUP_ELEM_BOOL(Additional, connectDots, "Connect dots", false)                 \
-    GROUP_ELEM_BOOL(Additional, addPortretToBassin, "Add portret to bassin", false) \
+#define GROUP_ADDITIONAL                                                             \
+    INIT_GROUP(Additional, "Additional")                                             \
+    GROUP_ELEM_DOUBLE(Additional, minx1, "min x1", 0)                                \
+    GROUP_ELEM_DOUBLE(Additional, miny1, "min y1", 0)                                \
+    GROUP_ELEM_DOUBLE(Additional, maxx1, "max x1", 3)                                \
+    GROUP_ELEM_DOUBLE(Additional, maxy1, "max y1", 4)                                \
+    GROUP_ELEM_INT(Additional, nx1, "# x1", 100)                                     \
+    GROUP_ELEM_INT(Additional, ny1, "# y1", 100)                                     \
+    GROUP_ELEM_INT(Additional, onWitch, "t", 100)                                    \
+    GROUP_ELEM_DOUBLE(Additional, mineps, "min eps", 1e-4)                           \
+    GROUP_ELEM_DOUBLE(Additional, maxeps, "max eps", 1e-3)                           \
+    GROUP_ELEM_INT(Additional, neps, "# eps", 10'000)                                \
+    GROUP_ELEM_DOUBLE(Additional, delta, "#delta", 1e-4)                             \
+    GROUP_ELEM_BOOL(Additional, bassinDrawBigDots, "Draw big dots in bassin", false) \
+    GROUP_ELEM_DOUBLE(Additional, bassinBigDotsSize, "big dots size", 2.0)           \
+    GROUP_ELEM_BOOL(Additional, connectDots, "Connect dots", false)                  \
+    GROUP_ELEM_BOOL(Additional, addPortretToBassin, "Add portret to bassin", false)  \
     GROUP_ELEM_BOOL(Additional, drawWithColorPaletteAtRight, "Draw with color palette at right", false)
 
 struct MyMainFrame

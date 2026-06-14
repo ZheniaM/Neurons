@@ -248,6 +248,8 @@ void MyMainFrame::make_all_fields_invisible()
     fLabel_mineps->UnmapWindow();
     fLabel_maxeps->UnmapWindow();
     fLabel_neps->UnmapWindow();
+    fLabel_delta->UnmapWindow();
+    fLabel_bassinBigDotsSize->UnmapWindow();
 
     // Hide all number entries
     fNumberEntry_I->UnmapWindow();
@@ -272,12 +274,15 @@ void MyMainFrame::make_all_fields_invisible()
     fNumberEntry_mineps->UnmapWindow();
     fNumberEntry_maxeps->UnmapWindow();
     fNumberEntry_neps->UnmapWindow();
+    fNumberEntry_delta->UnmapWindow();
+    fNumberEntry_bassinBigDotsSize->UnmapWindow();
 
     // Hide checkbox
     fCheckButton_isStachastick->UnmapWindow();
     fCheckButton_connectDots->UnmapWindow();
     fCheckButton_addPortretToBassin->UnmapWindow();
     fCheckButton_drawWithColorPaletteAtRight->UnmapWindow();
+    fCheckButton_bassinDrawBigDots->UnmapWindow();
     fECanvas->SetBackgroundColor(fECanvas->GetDefaultSelectedBackground());
 }
 
@@ -511,6 +516,8 @@ void MyMainFrame::make_visible_fields_for_transientBasin()
     fLabel_ny1->MapWindow();
     fLabel_pass->MapWindow();
     fLabel_process->MapWindow();
+    fLabel_delta->MapWindow();
+    fLabel_bassinBigDotsSize->MapWindow();
 
     fNumberEntry_I->MapWindow();
     fNumberEntry_k->MapWindow();
@@ -522,8 +529,11 @@ void MyMainFrame::make_visible_fields_for_transientBasin()
     fNumberEntry_ny1->MapWindow();
     fNumberEntry_pass->MapWindow();
     fNumberEntry_process->MapWindow();
+    fNumberEntry_delta->MapWindow();
+    fNumberEntry_bassinBigDotsSize->MapWindow();
 
     fCheckButton_addPortretToBassin->MapWindow();
+    fCheckButton_bassinDrawBigDots->MapWindow();
 }
 
 void MyMainFrame::make_visible_fields_for_transientBasinColor()

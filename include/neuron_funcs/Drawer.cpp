@@ -825,6 +825,7 @@ Drawer::Drawer Drawer::draw_TransientBasin(MyMainFrame const &mmf)
         .nx1{mmf.get_nx1()},
         .ny1{mmf.get_ny1()},
         .maxt{mmf.get_process()},
+        .delta{mmf.get_delta()},
     };
     auto points = tb.get_points();
 
@@ -841,7 +842,6 @@ Drawer::Drawer Drawer::draw_TransientBasin(MyMainFrame const &mmf)
         double x = points->get_x1_at(i);
         double y = points->get_y1_at(i);
         bool isconverge = points->get_x2_at(i);
-        // printf("t = %lf\n", points->get_y2_at(i));
         if (isconverge)
             gconverge.AddPoint(x, y);
         else
@@ -850,8 +850,12 @@ Drawer::Drawer Drawer::draw_TransientBasin(MyMainFrame const &mmf)
 
     gconverge.SetMarkerColor(EColor::kGreen);
     gdiverge.SetMarkerColor(EColor::kOrange);
-    gconverge.SetMarkerStyle(EMarkerStyle::kDot);
-    gdiverge.SetMarkerStyle(EMarkerStyle::kDot);
+    EMarkerStyle style = mmf.get_bassinDrawBigDots() ? EMarkerStyle::kFullCircle : EMarkerStyle::kDot;
+    gconverge.SetMarkerStyle(style);
+    gdiverge.SetMarkerStyle(style);
+    gconverge.SetMarkerSize(mmf.get_bassinBigDotsSize());
+    gdiverge.SetMarkerSize(mmf.get_bassinBigDotsSize());
+    
     mg->SetTitle(Form("Transient Basin: %s;x_{1};y_{1}", args));
     mg->Add(&gconverge);
     mg->Add(&gdiverge);
@@ -883,7 +887,7 @@ Drawer::Drawer Drawer::draw_TransientBasin(MyMainFrame const &mmf)
             portret.AddPoint(ppoints->get_x1_at(i), ppoints->get_y1_at(i));
         }
         portret.SetMarkerStyle(EMarkerStyle::kFullCircle);
-        portret.SetMarkerSize(1);
+        portret.SetMarkerSize(2.0);
         portret.SetMarkerColor(EColor::kMagenta);
         mg->Add(&portret);
     }
