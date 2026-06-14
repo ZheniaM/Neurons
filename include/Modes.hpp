@@ -17,6 +17,7 @@
     MODES_X(syncR2D, "Sync R 2D", SyncR2D)                                     \
     MODES_X(syncR2DChaos, "Sync R 2D K-EPS", SyncR2DChaos)                     \
     MODES_X(lyapunov, "Lyapunov", Lyapunov)                                    \
+    MODES_X(lyapunov2, "Lyapunov2", Lyapunov2)                                 \
     MODES_X(Lyapunov2D, "Lyapunov 2D", Lyapunov2D)                             \
     MODES_X(Lyapunov2DChaos, "Lyapunov 2D K-EPS", Lyapunov2DChaos)             \
     MODES_X(LyapunovEps, "Lyapunov EPS", LyapunovEps)                          \

@@ -172,18 +172,7 @@ void MyMainFrame::DoPrint()
 
 void MyMainFrame::DoSetStablePoint()
 {
-    static bool isStable = false;
-    static Point2x2 unstablePoint(0.93, 0.77, 1.3, 1.4);
-    double x1, y1, x2, y2;
-    // union hex2double
-    // {
-    //     uint64_t u64;
-    //     double f64;
-    // };
-    // hex2double x1;
-    // hex2double y1;
-    // hex2double x2;
-    // hex2double y2;
+    double x1{}, y1{}, x2{}, y2{};
 
     if (!isStable)
     {
@@ -191,10 +180,6 @@ void MyMainFrame::DoSetStablePoint()
         y1 = SystemOf2NeuronsState::stablePoint.lf_y;
         x2 = SystemOf2NeuronsState::stablePoint.lf_x;
         y2 = SystemOf2NeuronsState::stablePoint.lf_y;
-        // x1.u64 = 0x3fa65a4d262ccbd8;
-        // y1.u64 = 0x4003cac83591c392;
-        // x2.u64 = 0x3fa65a4d262ccbd8;
-        // y2.u64 = 0x4003cac83591c392;
         unstablePoint = Point2x2{
             fNumberEntry_x1->GetNumber(),
             fNumberEntry_y1->GetNumber(),
@@ -208,21 +193,13 @@ void MyMainFrame::DoSetStablePoint()
         y1 = unstablePoint.get_y1();
         x2 = unstablePoint.get_x2();
         y2 = unstablePoint.get_y2();
-        // x1.f64 = unstablePoint.get_x1();
-        // y1.f64 = unstablePoint.get_y1();
-        // x2.f64 = unstablePoint.get_x2();
-        // y2.f64 = unstablePoint.get_y2();
     }
-    isStable = !isStable;
+    isStable ^= true;
 
     fNumberEntry_x1->SetNumber(x1, true);
     fNumberEntry_y1->SetNumber(y1, true);
     fNumberEntry_x2->SetNumber(x2, true);
     fNumberEntry_y2->SetNumber(y2, true);
-    //     fNumberEntry_x1->SetNumber(x1.f64, true);
-    //     fNumberEntry_y1->SetNumber(y1.f64, true);
-    //     fNumberEntry_x2->SetNumber(x2.f64, true);
-    //     fNumberEntry_y2->SetNumber(y2.f64, true);
 }
 
 void MyMainFrame::onSelectedComboBox_mode(int id)
@@ -339,6 +316,23 @@ void MyMainFrame::make_visible_fields_for_bifurcTraction()
 }
 
 void MyMainFrame::make_visible_fields_for_lyapunov()
+{
+    fLabel_k1->MapWindow();
+    fLabel_k2->MapWindow();
+    fLabel_I->MapWindow();
+    fLabel_pass->MapWindow();
+    fLabel_process->MapWindow();
+
+    fNumberEntry_k1->MapWindow();
+    fNumberEntry_k2->MapWindow();
+    fNumberEntry_I->MapWindow();
+    fNumberEntry_pass->MapWindow();
+    fNumberEntry_process->MapWindow();
+
+    // Add dp
+}
+
+void MyMainFrame::make_visible_fields_for_lyapunov2()
 {
     fLabel_k1->MapWindow();
     fLabel_k2->MapWindow();

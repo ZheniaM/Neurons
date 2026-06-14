@@ -173,7 +173,9 @@ public:                                            \
 #undef MODES_X
 
 private:
+    Point2x2 unstablePoint{0.93, 0.77, 1.3, 1.4};
     bool fIsAxisHiden = false;
+    bool isStable = false;
 };
 
 #undef DECLARE_LABEL_NE_GETTER_OF_DOUBLE

@@ -1040,7 +1040,7 @@ Drawer::Drawer Drawer::draw_BifurcI(MyMainFrame const &mmf)
 
     canvas->cd(1);
     gx1.SetMarkerColor(EColor::kRed);
-    mg1->SetTitle(Form("Bifurcation IOX: %s;I;X_{1}", args));
+    mg1->SetTitle(Form("Bifurcation IOX: %s;I;X", args));
     mg1->Add(&gx1);
     mg1->Draw("A");
     canvas->Update();
@@ -1049,7 +1049,7 @@ Drawer::Drawer Drawer::draw_BifurcI(MyMainFrame const &mmf)
 
     canvas->cd(2);
     gx2.SetMarkerColor(EColor::kBlue);
-    mg2->SetTitle(Form("Bifurcation IOY: %s;I;Y_{1}", args));
+    mg2->SetTitle(Form("Bifurcation IOY: %s;I;Y", args));
     mg2->Add(&gx2);
     mg2->Draw("A");
     canvas->Update();
@@ -1328,4 +1328,108 @@ Drawer::Drawer Drawer::draw_StabilityOfChaos(MyMainFrame const &mmf)
 
     canvas->Update();
     return drawer;
+}
+
+Drawer::Drawer Drawer::draw_Lyapunov2(MyMainFrame const &mmf)
+{
+    Lyapunov lyapunov{
+        .P0{
+            mmf.get_x1(),
+            mmf.get_y1(),
+            mmf.get_x2(),
+            mmf.get_y2(),
+        },
+        .dP{
+            1,
+            2,
+            3,
+            4,
+        },
+        .a{mmf.get_a()},
+        .b{mmf.get_b()},
+        .c{mmf.get_c()},
+        .I{mmf.get_I()},
+        .k1{mmf.get_k1()},
+        .k2{mmf.get_k2()},
+        .process{mmf.get_process()},
+        .nk{mmf.get_eCanvas()->GetWidth()},
+    };
+    auto points = lyapunov.get_points();
+
+
+    Lyapunov lyapunovStable{
+        .P0{
+            mmf.get_stable_point().lf_x,
+            mmf.get_stable_point().lf_y,
+            mmf.get_stable_point().lf_x,
+            mmf.get_stable_point().lf_y,
+        },
+        .dP{
+            1,
+            2,
+            3,
+            4,
+        },
+        .a{mmf.get_a()},
+        .b{mmf.get_b()},
+        .c{mmf.get_c()},
+        .I{mmf.get_I()},
+        .k1{mmf.get_k1()},
+        .k2{mmf.get_k2()},
+        .process{mmf.get_process()},
+        .nk{mmf.get_eCanvas()->GetWidth()},
+    };
+    auto pointsStable = lyapunovStable.get_points();
+
+    TCanvas *canvas = mmf.get_eCanvas()->GetCanvas();
+    char const *args = Form("I=%0.4lf, k_{1}=%0.4lf, k_{2}=%0.4lf",
+                            lyapunov.I, lyapunov.k1, lyapunov.k2);
+
+    TGraph gStable{static_cast<int>(pointsStable->size()), pointsStable->get_data_xs(), pointsStable->get_data_ys()};
+    TGraph g{};
+    using SIZE = std::remove_const_t<decltype(points->size())>;
+    for (SIZE i = 0; i < points->size(); ++i)
+    {
+        double k = points->get_x_at(i);
+        if (k < 0.023 || 0.04 < k) continue;
+
+        g.AddPoint(k, points->get_y_at(i));
+    }
+
+    Drawer drawer("ALP", args, "Lyapunov");
+    auto mg = drawer.mg;
+
+    double const xs[] = {lyapunov.k1, lyapunov.k2};
+    double const ys[] = {0.0, 0.0};
+    TGraph xAxis{2ull, xs, ys};
+    xAxis.SetLineColor(EColor::kBlack);
+    xAxis.SetLineWidth(2);
+
+    EMarkerStyle style = EMarkerStyle::kDot;
+    double lineWidth = 2.0;
+    EColor color = EColor::kGreen;
+
+    g.SetMarkerStyle(style);
+    g.SetLineWidth(lineWidth);
+    g.SetMarkerColor(color);
+    g.SetLineColor(color);
+
+    gStable.SetMarkerStyle(style);
+    gStable.SetLineWidth(lineWidth * 2.0);
+    gStable.SetMarkerColor(color);
+    gStable.SetLineColor(color);
+
+    mg->SetTitle(Form("Lyapunov: %s;K;#lambda", args));
+    mg->Add(&xAxis);
+    mg->Add(&g);
+    mg->Add(&gStable);
+    mg->Draw("A");
+    canvas->Update();
+    setAxis(mg->GetXaxis(), mg->GetYaxis(), mmf);
+    mg->Draw("LP SAME");
+    // mg->Draw(drawer.drawOption);
+
+    canvas->Update();
+    return drawer;
+
 }
